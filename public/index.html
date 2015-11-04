@@ -158,7 +158,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-default" ng-click="showModal()">Fechar</button>
                             <button type="submit" class="btn btn-primary">Salvar alterações</button>
                         </div>
                     </div><!-- /.modal-content -->
@@ -262,7 +262,7 @@
                     <tbody ng-repeat="church in churches.list">
                         <tr>
                             <td>{{ church.name }}</td>
-                            <td ng-show="interaction.visibleColumns.address">{{ church.addresses[0].street }}, {{ church.addresses[0].number }}, {{ church.district }}</td>
+                            <td ng-show="interaction.visibleColumns.address">{{ church.addresses[0].street }}, {{ church.addresses[0].number }}, {{ church.addresses[0].district }}</td>
                             <td ng-show="interaction.visibleColumns.city">{{ church.addresses[0].city }}</td>
                             <td ng-show="interaction.visibleColumns.state">{{ church.addresses[0].state }}</td>
                             <td ng-show="interaction.visibleColumns.country">{{ church.addresses[0].country }}</td>

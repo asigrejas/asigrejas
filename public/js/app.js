@@ -219,7 +219,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     	}
 
     	save(path, church).then(function(response){
-            jQuery("#modalIgrejas").modal('show');
+            jQuery("#modalIgrejas").modal('hide');
             flash.success('Igreja Salva com sucesso!');
             delete $scope.church.name;
             delete $scope.church.ministry;
