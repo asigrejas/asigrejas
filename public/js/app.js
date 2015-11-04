@@ -11,8 +11,7 @@ angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     views: '/views/',
     path: '/'
 }).constant('API', {
-    //path: '//api.asigrejas.com/v1/',
-    path: '//api.igrejas.dlocal.in/v1/'
+    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
