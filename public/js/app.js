@@ -335,9 +335,9 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
 	}
 
-	$scope.showModal=function()
+	$scope.closeModal=function()
 	{
-        jQuery("#modalIgrejas").modal('show');
+        jQuery("#modalIgrejas").modal('hide');
 	}
 
 	/**
