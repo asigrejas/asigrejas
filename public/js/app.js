@@ -7,7 +7,7 @@
  */
 angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'As Igrejas V 1.0',
-    debug: true,
+    debug: false,
     views: '/views/',
     path: '/'
 }).constant('API', {
