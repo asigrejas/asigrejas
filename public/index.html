@@ -100,6 +100,11 @@
                                     <div class="container-fluid">
 
 
+                                        <div class="form-group">
+                                            <label for="street">CEP</label>
+                                            <input type="text" ng-model="church.address.zipcode" class="form-control" maxlength="10" ng-change="getCep(church.address.zipcode)">
+                                        </div>
+
 
                                         <div class="form-group">
                                             <label for="street">País</label>
@@ -129,18 +134,13 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="street">CEP</label>
-                                            <input type="text" ng-model="church.address.zipcode" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
                                             <label for="street">Logradouro</label>
                                             <input type="text" ng-model="church.address.street" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="street">Número</label>
-                                            <input type="text" ng-model="church.address.number" class="form-control">
+                                            <input type="text" ng-model="church.address.number" class="form-control" id="number">
                                         </div>
 
                                         <div class="form-group">
@@ -165,7 +165,7 @@
             </div><!-- /.modal -->
         </form>
 
-        <h1>Bem vindo às igrejas! - Versão Beta Test</h1>
+        <h1>Bem vindo às igrejas! - Versão Beta</h1>
 
         <div class="row">
             <div class="col-md-2">
@@ -198,7 +198,7 @@
             </div>
             <div class="col-md-10">
                 <div class="well">
-                    Problemas ou sugestões? Favor enviar email para: emtudo @ gmail .com
+                    Já viajou para outra cidade e não soube como encontrar uma igreja? Já quiz visitar outras igrejas? Outros também podem ter a mesma experiência que você cadastre sua igreja aqui, ou encontre uma para visiar.
                 </div>
                 <div class="well" ng-hide="true">
                     <div class="row">
@@ -284,29 +284,34 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6">{{ church.comments }}</td>
+                            <td colspan="8">{{ church.comments }}</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <nav class="text-center">
                     <ul class="pagination">
-                        <li>
-                            <a href ng-click="previous" aria-label="Previous">
+                        <li ng-class="{ disabled:pagination.currentPage == 1 }">
+                            <a href ng-click="previous()" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li
-                            repeat="pagination.pageNumbers">
-                            <a href ng-click="page($value)">{{ $value }}</a>
+                            ng-class="{ active:value == pagination.currentPage }"
+                            ng-repeat="value in pagination.pageNumbers">
+                            <a href ng-click="page(value)">{{ value }}</a>
                         </li>
-                        <li>
-                            <a href ng-click="next" aria-label="Next">
+                        <li ng-class="{ disabled:pagination.currentPage == pagination.totalPages }">
+                            <a href ng-click="next()" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
+                <div class="well">
+                    <div class="alert alert-info">"Não despreze os pequenos começos" Zc 4.10</div>
+                    <div>Problemas ou sugestões? Favor enviar email para: emtudo @ gmail .com</div>
+                </div>
 
             </div>
         </div>

@@ -1,16 +1,17 @@
 /**
- * App: As Igrejas V 1.0
+ * App: As Igrejas Version Beta
  * @author Leandro Henrique Reis http://henriquereis.com
  *
  * Inspirados nas aulas de VueJs do Vedovelli vedcasts.com.br 
  * Alguns métodos e layout foram importados das aulas
  */
 angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
-    name: 'As Igrejas V 1.0',
+    name: 'As Igrejas Version Beta',
     debug: false,
     views: '/views/',
     path: '/'
 }).constant('API', {
+//    path: '//api.igrejas.dlocal.in/v1/'
     path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
@@ -36,7 +37,9 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 	/**
 	 * defaults data;
 	 */
-	$scope.church = {};
+	$scope.church = {
+        address: {}
+    };
 	$scope.churches= {
             all: [],
             list: [],
@@ -44,7 +47,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         };
 
      $scope.pagination= {
-            perPage: 8,
+            perPage: 5,
             currentPage: 1,
             totalPages: 0,
             totalItems: 0,
@@ -221,7 +224,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     	save(path, church).then(function(response){
             jQuery("#modalIgrejas").modal('hide');
             getAll();
-            flash.success('Igreja Salva com sucesso!');
+            flash.success('Igreja Salva com sucesso!','SUCESSO!');
             delete $scope.church.name;
             delete $scope.church.ministry;
             delete $scope.church.email;
@@ -250,6 +253,9 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             $scope.pagination.totalItems = list.length;
             $scope.pagination.totalPages = Math.ceil(list.length / $scope.pagination.perPage);
             $scope.pagination.pageNumbers = _.range(1, $scope.pagination.totalPages+1);
+            if (APP.debug) {
+                console.log($scope.pagination.pageNumbers);
+            }
         };
 
 	$scope.page= function(page)
@@ -367,17 +373,19 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         $scope.interaction.columnsToFilter=jQuery("#columnsToFilterSelect").val();
     });
 
-    var getCountries=function()
+    var getCountries=function(defaultCountry, defaultState, defaultCity)
     {
+        defaultCountry=defaultCountry||defaults.country;
+
         if (APP.debug) {
             console.log(APP.path+'countries/countries.json');
         }
 
         $rootScope.get(APP.path+'countries/countries.json', function(response){
             $scope.countries=response.data;
-            $scope.address.country=angular.copy(defaults.country);
+            $scope.church.address.country=angular.copy(defaults.country);
 
-            $scope.getState(defaults.country);
+            $scope.getState(defaults.country, defaultState, defaultCity);
 
             if (APP.debug) {
                 console.log(response.data);
@@ -385,7 +393,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         });
     }
 
-    $scope.getState=function(data)
+    $scope.getState=function(data, defaultState, defaultCity)
     {
         if (APP.debug) {
             console.log(data);
@@ -397,6 +405,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         $rootScope.get(APP.path+'countries/states/'+country+'.json', function(response){
             $scope.states=response.data;
             $scope.hasStates=true;
+            if ( typeof defaultState!="undefined") {
+                $scope.church.address.state=angular.copy(defaultState);
+                $scope.getCities(defaultCity);
+            }
         },function(response){
             $scope.hasStates=false;
         });;
@@ -449,6 +461,9 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             $scope.cities=cities;
             $scope.address.city='';
             $scope.hasCities=true;
+            if ( typeof defaultCity!="undefined") {
+                $scope.church.address.city=angular.copy(defaultCity);
+            }
         },function(response){
             $scope.hasCities=false;
         });;
@@ -456,4 +471,27 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     getCountries();
 
+    $scope.getCep=function(cep)
+    {
+        var aux = cep.replace(/[^0-9]+/g, "");
+        if (aux != undefined && aux != "" && aux.length == 8) {
+            $http.get('https://viacep.com.br/ws/' + aux + '/json/').then(function(response) {
+                var address = response.data;
+                if (address.erro == undefined) {
+                    if (APP.debug){
+                        console.log(address);
+                    }
+                    getCountries('Brazil','BR-'+address.uf, address.localidade);
+                    $scope.church.address.district=address.bairro;
+                    $scope.church.address.city=address.localidade;
+                    $scope.church.address.street=address.logradouro;
+                    angular.element("#number").trigger('focus');
+                }
+            }, function(response) {
+                if (typeof error != "undefined") {
+                    error(response.data);
+                }
+            });
+        }
+    }
 }
