@@ -251,10 +251,14 @@
                                  <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('updated_at')=='asc', 'fa-sort-amount-desc': churchByOrder('updated_at')=='desc' }"></i>
                                 <a href ng-click="churchOrder('updated_at')">Atualizado em</a>
                             </th>
-                            <th width="1%" nowrap>
-                                <a href ng-click="openAllDetails">
-                                    <i class="fa"></i>
-                                </a>
+                           <th width="1%" nowrap>
+                                <a href ng-click="openAllComments()">
+                                    <i class="fa"
+                                        ng-class=" {
+                                            'fa-plus-square':interaction.openComments.length == 0,
+                                            'fa-minus-square':interaction.openComments.length > 0 }
+                                        "></i>
+                               </a>
                             </th>
                             <th width="1%" nowrap>
                                 <i class="fa fa-fw fa-edit"></i>
@@ -269,22 +273,31 @@
                             <td ng-show="interaction.visibleColumns.state">{{ church.addresses[0].state }}</td>
                             <td ng-show="interaction.visibleColumns.country">{{ church.addresses[0].country }}</td>
                             <td ng-show="interaction.visibleColumns.updated_at">{{ church.updated_at | dateFormat:'DD/MM/YYYY HH:mm' }}</td>
+
+
                             <td>
                                 <a href
-                                    
-                                    ng-click="doOpenDetails(church.id)">
-                                    <i class="fa"></i>
+                                    ng-show="church.comments"
+                                    ng-click="doOpenComments(church.id)">
+                                    <i class="fa"
+
+                                        ng-class=" { 'fa-plus-square':interaction.openComments.indexOf(church.id) == -1,
+                                            'fa-minus-square':interaction.openComments.indexOf(church.id) > -1 }"
+
+                                     $scope.interaction.openComments.indexOf
+                                       ></i>
                                 </a>
                                 <i class="fa fa-plus-square"
-                                    
+                                    ng-show="!church.comments"
                                     style="opacity:0.3"></i>
                             </td>
+
                             <td width="1%" nowrap>
                                 <a href ng-click="edit(church)"><i class="fa fa-fw fa-edit"></i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="8">{{ church.comments }}</td>
+                        <tr ng-show="interaction.openComments.indexOf(church.id) > -1 && church.comments != ''">
+                            <td colspan="6">{{ church.comments }}</td>
                         </tr>
                     </tbody>
                 </table>

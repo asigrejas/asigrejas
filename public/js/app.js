@@ -58,9 +58,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             visibleColumns: {'address':true, 'city':true, 'updated_at':true},
             columnsToFilter: [],
             filterTerm: '',
-            openDetails: [],
-            sortColumn: 'name',
-            sortInverse: false,
+            openComments: []
         };
     $scope.countries=[];
     $scope.states=[];
@@ -297,35 +295,35 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             $scope.interaction.visibleColumns = {'address':true, 'city':true, 'updated_at':true};
             $scope.interaction.columnsToFilter = [];
             $scope.interaction.filterTerm = '';
-            $scope.interaction.openDetails = [];
+            $scope.interaction.openComments = [];
 
             $scope.setPaginationData($scope.churches.all);
 
             $scope.controls.select2.val('').trigger('change');
         };
 
-	$scope.doOpenDetails= function(id)
+	$scope.doOpenComments= function(id)
         {
-			var index = self.interaction.openDetails.indexOf(id);
+			var index = $scope.interaction.openComments.indexOf(id);
 
 			/**
 			 * trabalhar para colocar em angular isso
 			 */
             if(index > -1)
             {
-                $scope.interaction.openDetails.$remove(index);
+                $scope.interaction.openComments.splice(index,1);
             } else {
-                $scope.interaction.openDetails.push(id);
+                $scope.interaction.openComments.push(id);
             }
         };
 
-	$scope.openAllDetails= function()
+	$scope.openAllComments= function()
         {
-            if($scope.interaction.openDetails.length > 0)
+            if($scope.interaction.openComments.length > 0)
             {
-                $scope.interaction.openDetails=[];
+                $scope.interaction.openComments=[];
             } else {
-                $scope.interaction.openDetails= _.pluck(self.churches.list, 'id');
+                $scope.interaction.openComments= _.pluck($scope.churches.list, 'id');
             }
         };
 
