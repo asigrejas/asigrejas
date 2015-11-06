@@ -11,7 +11,7 @@ angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     views: '/views/',
     path: '/'
 }).constant('API', {
-//    path: '//api.igrejas.dlocal.in/v1/'
+//    path: '//api.asigrejas.app/v1/'
     path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
@@ -37,9 +37,34 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 	/**
 	 * defaults data;
 	 */
-	$scope.church = {
-        address: {}
+    var Address = function(){
+        var isObject = this instanceof Address;
+        /**
+         * Garante que seja uma instancia de Address
+         *
+         * @param  {Boolean} isObject
+         *
+         * @return new Address
+         */
+        if (isObject === false) {
+            return new Address();
+        };
+
+
+        this.number='';
+        this.city='';
+        this.district='';
+        this.street='';
+        this.hasStates=true;
+        this.hasCities=true;
+        this.cities=[];
+
     };
+
+    $scope.church = {
+        addresses: []
+    };
+
 	$scope.churches= {
             all: [],
             list: [],
@@ -47,7 +72,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         };
 
      $scope.pagination= {
-            perPage: 5,
+            perPage: 20,
             currentPage: 1,
             totalPages: 0,
             totalItems: 0,
@@ -60,11 +85,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             filterTerm: '',
             openComments: []
         };
+
     $scope.countries=[];
     $scope.states=[];
     $scope.address={};
-    $scope.hasStates=true;
-    $scope.hasCities=true;
 
 	$scope.controls= {
             select2: null,
@@ -204,7 +228,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             return false;
         }
 
-        if (church.address==undefined) {
+        if (church.addresses.length<1) {
             flash.warning('Informe pelo menos um endereço','AVISO!');
             return false;
         }
@@ -218,24 +242,24 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     		console.log(church);
     		console.log(path);
     	}
-
+        if (APP.debug) {
+            console.log("######## DADOS PARA SEREM SALVOS");
+            console.log(church);
+        }
     	save(path, church).then(function(response){
+            $scope.church = {
+                addresses: []
+            };
+
+            $('.nav-tabs a[href="#tabIgreja"]').tab('show');
             jQuery("#modalIgrejas").modal('hide');
-            getAll();
-            flash.success('Igreja Salva com sucesso!','SUCESSO!');
-            delete $scope.church.name;
-            delete $scope.church.ministry;
-            delete $scope.church.email;
-            delete $scope.church.website;
-            delete $scope.church.comments;
-            delete $scope.church.phone1;
-            delete $scope.church.phone2;
-            delete $scope.church.phone3;
-            delete $scope.church.address.zipcode;
-            delete $scope.church.address.street;
-            delete $scope.church.address.number;
-            delete $scope.church.address.district;
+            $scope.addAddess();
+//            getAll();
+            flash.success('Igreja Salva com sucesso! - Aguardando Aprovação','SUCESSO!');
     	}, function(response){
+            if (APP.debug) {
+                console.log(response.data);
+            }
     		flash.error('Houve uma falha ao tentar salvar a igreja','ERRO!');
     	})
     }
@@ -299,7 +323,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
             $scope.setPaginationData($scope.churches.all);
 
-            $scope.controls.select2.val('').trigger('change');
+            //$scope.controls.select2.val('').trigger('change');
         };
 
 	$scope.doOpenComments= function(id)
@@ -351,7 +375,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     $scope.churchOrder = function(property) {
         var order = OrderService.get('churches', property);
 
-        $scope.churches.list=$filter('orderBy')($scope.churches.list, order);
+        $scope.churches.all=$filter('orderBy')($scope.churches.all, order);
+        $scope.setPaginationData($scope.churches.all);
     };
 
     /**
@@ -371,7 +396,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         $scope.interaction.columnsToFilter=jQuery("#columnsToFilterSelect").val();
     });
 
-    var getCountries=function(defaultCountry, defaultState, defaultCity)
+    var getCountries=function(defaultCountry, defaultState, defaultCity, address)
     {
         defaultCountry=defaultCountry||defaults.country;
 
@@ -381,9 +406,11 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
         $rootScope.get(APP.path+'countries/countries.json', function(response){
             $scope.countries=response.data;
-            $scope.church.address.country=angular.copy(defaults.country);
+            if (address!=undefined) {
+                address.country=angular.copy(defaults.country);
+            }
 
-            $scope.getState(defaults.country, defaultState, defaultCity);
+            $scope.getState(defaults.country, defaultState, defaultCity, address);
 
             if (APP.debug) {
                 console.log(response.data);
@@ -391,7 +418,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         });
     }
 
-    $scope.getState=function(data, defaultState, defaultCity)
+    $scope.getState=function(data, defaultState, defaultCity, address)
     {
         if (APP.debug) {
             console.log(data);
@@ -402,35 +429,41 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
         $rootScope.get(APP.path+'countries/states/'+country+'.json', function(response){
             $scope.states=response.data;
-            $scope.hasStates=true;
+            address.hasStates=true;
             if ( typeof defaultState!="undefined") {
-                $scope.church.address.state=angular.copy(defaultState);
-                $scope.getCities(defaultCity);
+                if (address!=undefined) {
+                    address.state=angular.copy(defaultState);
+                }
+                $scope.getCities(defaultState, defaultCity, address);
             }
         },function(response){
-            $scope.hasStates=false;
+            address.hasStates=false;
         });;
     }
 
-    $scope.getCities=function(state)
+    $scope.getCities=function(state, defaultCity, address)
     {
         if (APP.debug) {
             console.log(state);
         }
 
-        $scope.address.city='';
-
-        console.log(typeof state);
         if (state==undefined || typeof state!='string') {
-            return false;
-        }
-
-        if ($scope.address.country!='Brazil') {
-            $scope.hasCities=false;
+            address.city='';
 
             return false;
         }
 
+        if (address.country!='Brazil') {
+            address.hasCities=false;
+            address.city='';
+
+            return false;
+        }
+
+        if (APP.debug) {
+            console.log("##### PATH #####");
+            console.log(APP.path+'countries/cities/brazil.json');
+        }
         $rootScope.get(APP.path+'countries/cities/brazil.json', function(response){
             var aux=response.data;
 
@@ -445,7 +478,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
                 console.log(aux);
                 console.log(aux[0].cities);
             }
-            $scope.cities=[];
+            address.cities=[];
             var cities=[];
             angular.forEach(aux[0].cities, function(item){
                 cities.push({
@@ -456,34 +489,34 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
                 console.log("### CITIES ###");
                 console.log(cities);
             }            
-            $scope.cities=cities;
-            $scope.address.city='';
-            $scope.hasCities=true;
+            address.cities=cities;
+            address.city='';
+            address.hasCities=true;
             if ( typeof defaultCity!="undefined") {
-                $scope.church.address.city=angular.copy(defaultCity);
+                address.city=angular.copy(defaultCity);
             }
         },function(response){
-            $scope.hasCities=false;
+            address.hasCities=false;
         });;
     }
 
-    getCountries();
-
-    $scope.getCep=function(cep)
+    $scope.getCep=function(cep, index)
     {
+        var address=this.address;
+        address.numberId='number'+index;
         var aux = cep.replace(/[^0-9]+/g, "");
         if (aux != undefined && aux != "" && aux.length == 8) {
             $http.get('https://viacep.com.br/ws/' + aux + '/json/').then(function(response) {
-                var address = response.data;
-                if (address.erro == undefined) {
+                var aux = response.data;
+                if (aux.erro == undefined) {
                     if (APP.debug){
-                        console.log(address);
+                        console.log(aux);
                     }
-                    getCountries('Brazil','BR-'+address.uf, address.localidade);
-                    $scope.church.address.district=address.bairro;
-                    $scope.church.address.city=address.localidade;
-                    $scope.church.address.street=address.logradouro;
-                    angular.element("#number").trigger('focus');
+                    getCountries('Brazil','BR-'+aux.uf, aux.localidade, address);
+                    address.district=aux.bairro;
+                    address.city=aux.localidade;
+                    address.street=aux.logradouro;
+                    angular.element("#"+address.numberId).trigger('focus');
                 }
             }, function(response) {
                 if (typeof error != "undefined") {
@@ -492,4 +525,20 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             });
         }
     }
+
+    $scope.addAddess=function()
+    {
+        $scope.church.addresses.push(angular.copy(new Address()));
+    }
+
+    $scope.showTab=function(id)
+    {
+        $('.nav-tabs a[href="#tabEndereco_'+id+'"]').tab('show');
+    }
+
+
+    $scope.addAddess();
+
+    getCountries(defaults.country, undefined, undefined, $scope.church.addresses[0]);
+
 }

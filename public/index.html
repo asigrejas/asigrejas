@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.css">
     <link rel="stylesheet" type="text/css" href="/node_modules/sweetalert/dist/sweetalert.css">
+    <link rel="stylesheet" href="/css/modalFullscreen.css" rel="stylesheet">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 
     <div class="container" ng-controller="ChurchController">
         <form ng-submit="churchSave(church)">
-            <div class="modal fade" ng-click="showModal()" id="modalIgrejas">
+            <div class="modal fade modal-fullscreen" ng-click="showModal()" id="modalIgrejas">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -30,7 +31,8 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tabIgreja" data-toggle="tab">Igreja</a></li>
                                 <li><a href="#tabContatos" data-toggle="tab">Contatos</a></li>
-                                <li><a href="#tabEndereco" data-toggle="tab">Endereço</a></li>
+                                <li ng-repeat="address in church.addresses"><a ng-href="#tabEndereco_{{$index +1}}" ng-click="showTab($index + 1)">Endereço {{$index + 1}}</a></li>
+                                <li><a href="#" ng-click="addAddess()">Adicionar endereço</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabIgreja">
@@ -76,7 +78,6 @@
                                     <div class="container-fluid">
 
 
-
                                         <div class="form-group">
                                             <label for="comments">Telefone 1</label>
                                             <input type="text" ng-model="church.phone1" class="form-control" maxlength="15">
@@ -96,61 +97,65 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane" id="tabEndereco">
-                                    <div class="container-fluid">
+                                    <div ng-repeat="address in church.addresses" class="tab-pane" ng-attr-id="tabEndereco_{{$index + 1}}">
 
 
-                                        <div class="form-group">
-                                            <label for="street">CEP</label>
-                                            <input type="text" ng-model="church.address.zipcode" class="form-control" maxlength="10" ng-change="getCep(church.address.zipcode)">
-                                        </div>
+                                        <div class="container-fluid">
 
-
-                                        <div class="form-group">
-                                            <label for="street">País</label>
-                                            <select ng-model="church.address.country" ng-options="country.name as country.name for country in countries" ng-change="getState(church.address.country)" class="form-control">
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="street">Estado</label>
-                                            <select ng-model="church.address.state" ng-options="state.code as state.name for state in states" ng-if="hasStates" ng-change="getCities(church.address.state)" class="form-control">
-                                            </select>
-                                            <div ng-if="!hasStates">
-                                                <input type="text" ng-model="church.address.state" class="form-control">
+                                            <div class="form-group">
+                                                <label for="street">CEP</label>
+                                                <input type="text" ng-model="address.zipcode" class="form-control" maxlength="10" ng-change="getCep(address.zipcode, $index)">
                                             </div>
 
-                                        </div>
 
-                                        <div class="form-group">
-                                            <label for="street">Cidade</label>
-                                            <select ng-model="church.address.city" ng-options="city.name as city.name for city in cities" ng-if="hasCities" ng-hide="!church.address.state" class="form-control">
-                                            </select>
-
-                                            <div  ng-if="!hasCities">
-                                                <input type="text" ng-model="church.address.city" class="form-control">
+                                            <div class="form-group">
+                                                <label for="street">País</label>
+                                                <select ng-model="address.country" ng-options="country.name as country.name for country in countries" ng-change="getState(address.country)" class="form-control">
+                                                </select>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="street">Estado</label>
+                                                <select ng-model="address.state" ng-options="state.code as state.name for state in states" ng-if="address.hasStates" ng-change="getCities(address.state)" class="form-control">
+                                                </select>
+                                                <div ng-if="!address.hasStates">
+                                                    <input type="text" ng-model="address.state" class="form-control">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="street">Cidade</label>
+                                                <select ng-model="address.city" ng-options="city.name as city.name for city in address.cities" ng-if="address.hasCities" ng-hide="!address.state" class="form-control">
+                                                </select>
+
+                                                <div  ng-if="!address.hasCities">
+                                                    <input type="text" ng-model="address.city" class="form-control">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="street">Logradouro</label>
+                                                <input type="text" ng-model="address.street" class="form-control">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="street" ng-model="address.numberId">Número</label>
+                                                <input type="text" ng-model="address.number" class="form-control" ng-attr-id="number{{$index}}">
+                                            
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="street">Bairro</label>
+                                                <input type="text" ng-model="address.district" class="form-control">
+                                            </div>
+
+
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="street">Logradouro</label>
-                                            <input type="text" ng-model="church.address.street" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="street">Número</label>
-                                            <input type="text" ng-model="church.address.number" class="form-control" id="number">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="street">Bairro</label>
-                                            <input type="text" ng-model="church.address.district" class="form-control">
-                                        </div>
-
-
-                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -198,7 +203,7 @@
             </div>
             <div class="col-md-10">
                 <div class="well">
-                    Já viajou para outra cidade e não soube como encontrar uma igreja? Já quiz visitar outras igrejas? Outros também podem ter a mesma experiência que você cadastre sua igreja aqui, ou encontre uma para visiar.
+                    Já viajou para outra cidade e não soube como encontrar uma igreja? Já quiz visitar outras igrejas? Outros também podem ter a mesma experiência que você cadastre sua igreja aqui, ou encontre uma para visitar.
                 </div>
                 <div class="well" ng-hide="true">
                     <div class="row">
@@ -232,20 +237,20 @@
                                 <a href ng-click="churchOrder('name')">Nome</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.address">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0]')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0]')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses[0]')">Endereço</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0]')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].street')=='desc' }"></i>
+                                <a href ng-click="churchOrder('addresses[0].street')">Endereço</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.city">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.city')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses.city')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses.city')">Cidade</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.city')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].city')=='desc' }"></i>
+                                <a href ng-click="churchOrder('addresses[0].city')">Cidade</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.state">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.state')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses.state')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses.state')">Estado</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.state')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].state')=='desc' }"></i>
+                                <a href ng-click="churchOrder('addresses[0].state')">Estado</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.country">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.country')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses.country')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses.country')">País</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.country')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].country')=='desc' }"></i>
+                                <a href ng-click="churchOrder('addresses[0].country')">País</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.updated_at">
                                  <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('updated_at')=='asc', 'fa-sort-amount-desc': churchByOrder('updated_at')=='desc' }"></i>
@@ -268,10 +273,26 @@
                     <tbody ng-repeat="church in churches.list">
                         <tr>
                             <td>{{ church.name }}</td>
-                            <td ng-show="interaction.visibleColumns.address">{{ church.addresses[0].street }}, {{ church.addresses[0].number }}, {{ church.addresses[0].district }}</td>
-                            <td ng-show="interaction.visibleColumns.city">{{ church.addresses[0].city }}</td>
-                            <td ng-show="interaction.visibleColumns.state">{{ church.addresses[0].state }}</td>
-                            <td ng-show="interaction.visibleColumns.country">{{ church.addresses[0].country }}</td>
+                            <td ng-show="interaction.visibleColumns.address">
+                                <div ng-repeat="address in church.addresses">
+                                    {{ address.street }}, {{ address.number }}, {{ address.district }}
+                                </div>
+                            </td>
+                            <td ng-show="interaction.visibleColumns.city">
+                                <div ng-repeat="address in church.addresses">
+                                    {{ address.city }}
+                                </div>
+                            </td>
+                            <td ng-show="interaction.visibleColumns.state">
+                                <div ng-repeat="address in church.addresses">
+                                    {{ address.state }}
+                                </div>
+                            </td>
+                            <td ng-show="interaction.visibleColumns.country">
+                                <div ng-repeat="address in church.addresses">
+                                    {{ address.country }}
+                                </div>
+                            </td>
                             <td ng-show="interaction.visibleColumns.updated_at">{{ church.updated_at | dateFormat:'DD/MM/YYYY HH:mm' }}</td>
 
 
