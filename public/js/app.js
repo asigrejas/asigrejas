@@ -7,12 +7,12 @@
  */
 angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'As Igrejas Version Beta',
-    debug: false,
+    debug: true,
     views: '/views/',
     path: '/'
 }).constant('API', {
-//    path: '//api.asigrejas.app/v1/'
-    path: '//api.asigrejas.com/v1/'
+    path: '//api.asigrejas.app/v1/'
+//    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
@@ -260,7 +260,11 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             if (APP.debug) {
                 console.log(response.data);
             }
-    		flash.error('Houve uma falha ao tentar salvar a igreja','ERRO!');
+            var errors=[];
+                angular.forEach(response.data.message,function(error, key){
+                    errors.push(key);
+                });
+    		flash.error('Houve uma falha ao tentar salvar a igreja, verifique se preencheu todos os dados do(s) endereço(s).','ERRO!');
     	})
     }
 
@@ -541,4 +545,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     getCountries(defaults.country, undefined, undefined, $scope.church.addresses[0]);
 
+
+    $scope.deleteAddress=function(address)
+    {
+        var index=$scope.church.addresses.indexOf(address);
+        $scope.church.addresses.splice(index,1);
+    }
 }
