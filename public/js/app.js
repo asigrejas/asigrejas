@@ -330,6 +330,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
             $scope.setPaginationData($scope.churches.all);
 
+            OrderService.reset('churches');
+
             //$scope.controls.select2.val('').trigger('change');
         };
 

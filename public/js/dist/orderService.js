@@ -37,21 +37,34 @@ angular.module('OrderService', []).service('OrderService', [
                 }
 
                 return 'desc';
+            },
+
+            reset: function(modulo){
+                delete order[modulo];
+            },
+
+            resetAll: function()
+            {
+                for (var key in order) {
+                    delete order[key];
+                }
+
+                return true;
             }
         };
 
         function getOrder(modulo) {
-            var order = [];
+            var myOrder = [];
             for (var key in modulo) {
                 if (modulo.hasOwnProperty(key)) {
                     if (modulo[key] === 1) {
-                        order.push('-' + key);
+                        myOrder.push('-' + key);
                     } else {
-                        order.push(key);
+                        myOrder.push(key);
                     }
                 }
             }
-            return order;
+            return myOrder;
         }
     }
 ]);
