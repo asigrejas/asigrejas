@@ -110,13 +110,13 @@
 
                                             <div class="form-group">
                                                 <label for="street">País</label>
-                                                <select ng-model="address.country" ng-options="country.name as country.name for country in countries" ng-change="getState(address.country)" class="form-control">
+                                                <select ng-model="address.country" ng-options="country.name as country.name for country in countries" ng-change="getState(address.country, null, null, address)" class="form-control">
                                                 </select>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="street">Estado</label>
-                                                <select ng-model="address.state" ng-options="state.code as state.name for state in states" ng-if="address.hasStates" ng-change="getCities(address.state)" class="form-control">
+                                                <select ng-model="address.state" ng-options="state.code as state.name for state in states" ng-if="address.hasStates" ng-change="getCities(address.state, null, address)" class="form-control">
                                                 </select>
                                                 <div ng-if="!address.hasStates">
                                                     <input type="text" ng-model="address.state" class="form-control">

@@ -11,8 +11,8 @@ angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     views: '/views/',
     path: '/'
 }).constant('API', {
-//    path: '//api.asigrejas.app/v1/'
-    path: '//api.asigrejas.com/v1/'
+    path: '//api.asigrejas.app/v1/'
+//    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
@@ -55,8 +55,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         this.city='';
         this.district='';
         this.street='';
-        this.hasStates=true;
-        this.hasCities=true;
+        this.hasStates=false;
+        this.hasCities=false
         this.cities=[];
 
     };
@@ -88,7 +88,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     $scope.countries=[];
     $scope.states=[];
-    $scope.address={};
+    $scope.address={
+        'country':'',
+        'state':''
+    };
 
 	$scope.controls= {
             select2: null,
@@ -357,7 +360,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
 	var getAll=function()
 	{
-		$http.get(API.path+'churches').then(function(response){
+		$rootScope.get(API.path+'churches', function(response){
             if (APP.debug){
                 console.log(response.data);
             }
@@ -389,8 +392,6 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     $scope.churchByOrder = function(property) {
         return OrderService.byOrder('churches', property);
     };
-
-    getAll();
 
 
     $scope.controls.select2 = jQuery("#columnsToFilterSelect").select2({
@@ -452,6 +453,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         }
 
         if (state==undefined || typeof state!='string') {
+            address.hasCities=false;
             address.city='';
 
             return false;
@@ -551,4 +553,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         var index=$scope.church.addresses.indexOf(address);
         $scope.church.addresses.splice(index,1);
     }
+
+    getAll();
+
 }
