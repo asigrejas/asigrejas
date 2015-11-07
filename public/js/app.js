@@ -7,12 +7,12 @@
  */
 angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'As Igrejas Version Beta',
-    debug: true,
+    debug: false,
     views: '/views/',
     path: '/'
 }).constant('API', {
-    path: '//api.asigrejas.app/v1/'
-//    path: '//api.asigrejas.com/v1/'
+//    path: '//api.asigrejas.app/v1/'
+    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
