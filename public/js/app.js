@@ -66,6 +66,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     };
 
     $scope.contacts={};
+    $scope.sendContacts=false;
 
 	$scope.churches= {
             all: [],
@@ -579,13 +580,14 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             return;
         }
 
-        flash.warning('estamos enviando sua mensagem...','Aguarde...');
-
+        $scope.sendContacts=true;
         $rootScope.post(API.path+'contacts', contact, function(response){
             $scope.contacts={};
             jQuery("#modalContacts").modal('hide');
             flash.success('Sua mensagem foi enviada com sucesso!','Obrigado!');
+            $scope.sendContacts=false;
         },function(response){
+            $scope.sendContacts=false;
             jQuery("#modalContacts").modal('hide');
             flash.error('Houve uma falha no envio de sua mensgaem, por favor verifique os dados informados');
 
