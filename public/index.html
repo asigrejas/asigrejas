@@ -29,7 +29,7 @@
 
     <div class="container" ng-controller="ChurchController">
         <form ng-submit="churchSave(church)">
-            <div class="modal fade modal-fullscreen" ng-click="showModal()" id="modalIgrejas">
+            <div class="modal fade modal-fullscreen" id="modalChurches">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -39,75 +39,75 @@
                         <div class="modal-body">
 
 
-                        <div class="tabbable">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tabIgreja" data-toggle="tab">Igreja</a></li>
-                                <li><a href="#tabContatos" data-toggle="tab">Contatos</a></li>
-                                <li ng-repeat="address in church.addresses"><a ng-href="#tabEndereco_{{$index +1}}" ng-click="showTab($index + 1)">Endereço {{$index + 1}}</a></li>
-                                <li><a href="#" ng-click="addAddess()">Adicionar endereço</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tabIgreja">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-sm-12">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tabIgreja" data-toggle="tab">Igreja</a></li>
+                                    <li><a href="#tabContatos" data-toggle="tab">Contatos</a></li>
+                                    <li ng-repeat="address in church.addresses"><a ng-href="#tabEndereco_{{$index +1}}" ng-click="showTab($index + 1)">Endereço {{$index + 1}}</a></li>
+                                    <li><a href="#" ng-click="addAddess()">Adicionar endereço</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tabIgreja">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-sm-12">
 
 
-                                                <div class="form-group">
-                                                    <label for="comments">Nome</label>
-                                                    <input type="text" ng-model="church.name" class="form-control">
+                                                    <div class="form-group">
+                                                        <label for="comments">Nome</label>
+                                                        <input type="text" ng-model="church.name" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="comments">Ministério</label>
+                                                        <input type="text" ng-model="church.ministry" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="comments">Email</label>
+                                                        <input type="text" ng-model="church.email" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="comments">Website</label>
+                                                        <input type="text" ng-model="church.website" class="form-control">
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label for="comments">Comentários</label>
+                                                        <textarea ng-model="church.comments" class="form-control"></textarea>
+                                                    </div>
+
+
+
                                                 </div>
-
-                                                <div class="form-group">
-                                                    <label for="comments">Ministério</label>
-                                                    <input type="text" ng-model="church.ministry" class="form-control">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="comments">Email</label>
-                                                    <input type="text" ng-model="church.email" class="form-control">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="comments">Website</label>
-                                                    <input type="text" ng-model="church.website" class="form-control">
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <label for="comments">Comentários</label>
-                                                    <textarea ng-model="church.comments" class="form-control"></textarea>
-                                                </div>
-
-
-
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="tab-pane" id="tabContatos">
-                                    <div class="container-fluid">
+                                    <div class="tab-pane" id="tabContatos">
+                                        <div class="container-fluid">
 
 
-                                        <div class="form-group">
-                                            <label for="comments">Telefone 1</label>
-                                            <input type="text" ng-model="church.phone1" class="form-control" maxlength="15">
+                                            <div class="form-group">
+                                                <label for="comments">Telefone 1</label>
+                                                <input type="text" ng-model="church.phone1" class="form-control" maxlength="15">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="comments">Telefone 2</label>
+                                                <input type="text" ng-model="church.phone2" class="form-control" maxlength="15">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="comments">Telefone 3</label>
+                                                <input type="text" ng-model="church.phone3" class="form-control" maxlength="15">
+                                            </div>
+
+
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="comments">Telefone 2</label>
-                                            <input type="text" ng-model="church.phone2" class="form-control" maxlength="15">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="comments">Telefone 3</label>
-                                            <input type="text" ng-model="church.phone3" class="form-control" maxlength="15">
-                                        </div>
-
-
                                     </div>
-                                </div>
 
                                     <div ng-repeat="address in church.addresses" class="tab-pane" ng-attr-id="tabEndereco_{{$index + 1}}">
                                         <h3><a href="#" ng-click="deleteAddress(address)">Apagar endereço</a></h3>
@@ -166,11 +166,10 @@
 
                                         </div>
 
+                                    </div>
+
                                 </div>
-
                             </div>
-                        </div>
-
 
                         </div>
                         <div class="modal-footer">
@@ -208,12 +207,18 @@
 
                 <div class="well">
                     <button
-                        class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalIgrejas">
+                        class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalChurches">
                         Nova Igreja
                     </button>
                 </div>
                 <div class="well">
                      <div class="alert alert-info">"Não despreze os pequenos começos" Zc 4.10</div>
+                </div>
+                <div class="well">
+                    <button
+                        class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalContacts">
+                        Contato
+                    </button>
                 </div>
             </div>
             <div class="col-md-10 col-sm-12">
@@ -358,11 +363,81 @@
                     </ul>
                 </nav>
                 <div class="well">
-                    <div>Problemas ou sugestões? Favor enviar email para: emtudo @ gmail .com</div>
+                    <div>Problemas ou sugestões? <a href data-toggle="modal" data-target="#modalContacts">Entre em contato</a></div>
                 </div>
 
             </div>
         </div>
+
+
+        <div class="modal fade" id="modalContacts">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Contato</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Contato</div>
+                                    <div class="panel-body">
+
+                                        <form class="form-horizontal" ng-submit="sendContact(contacts)">
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Nome</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" class="form-control" ng-model="contacts.name">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Email</label>
+                                                <div class="col-md-6">
+                                                    <input type="email" class="form-control" ng-model="contacts.email">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Telefone</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" class="form-control" ng-model="contacts.phone">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Mensagem</label>
+                                                <div class="col-md-6">
+                                                    <textarea ng-model="contacts.comments" class="form-control" rows="3"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-6 col-md-offset-4">
+                                                    <button type="submit" class="btn btn-primary" style="margin-right: 15px;">
+                                                        Enviar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="closeModal()">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
     </div>
 
     <div>

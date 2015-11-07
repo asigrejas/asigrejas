@@ -7,12 +7,12 @@
  */
 angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'As Igrejas Version Beta',
-    debug: false,
+    debug: true,
     views: '/views/',
     path: '/'
 }).constant('API', {
-//    path: '//api.asigrejas.app/v1/'
-    path: '//api.asigrejas.com/v1/'
+    path: '//api.asigrejas.app/v1/'
+//    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
@@ -64,6 +64,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     $scope.church = {
         addresses: []
     };
+
+    $scope.contacts={};
 
 	$scope.churches= {
             all: [],
@@ -119,20 +121,21 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             console.log(config);
         }
         $http.post(path, dados, config).then(function(response) {
-            if (AP.debug) {
+            if (APP.debug) {
                 console.log(response);
             }
-            success(response);
+
+            if (typeof success=="function") {
+                success(response);
+            }
         }, function(response) {
             if (APP.debug) {
                 console.log(response);
             }
-            //Verifica se foi falha de permissão
-            if ($rootScope.unauthenticated(response.data)) {
-                return;
-            }
 
-            error(response);
+            if (typeof error=="function") {
+                error(response);
+            }
         });
     }
 
@@ -255,7 +258,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             };
 
             $('.nav-tabs a[href="#tabIgreja"]').tab('show');
-            jQuery("#modalIgrejas").modal('hide');
+            jQuery("#modalChurches").modal('hide');
             $scope.addAddess();
 //            getAll();
             flash.success('Igreja Salva com sucesso! - Aguardando Aprovação','SUCESSO!');
@@ -375,7 +378,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
 	$scope.closeModal=function()
 	{
-        jQuery("#modalIgrejas").modal('hide');
+        jQuery("#modalChurches").modal('hide');
+        jQuery("#modalContacts").modal('hide');
 	}
 
 	/**
@@ -556,6 +560,40 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         $scope.church.addresses.splice(index,1);
     }
 
-    getAll();
+    $scope.sendContact=function(contact){
+        if (contact.name==undefined || contact.name=='') {
+            flash.warning('Informe seu nome','AVISO!');
 
+            return;
+        }
+
+        if (contact.email==undefined || contact.email=='') {
+            flash.warning('Informe seu email','AVISO!');
+
+            return;
+        }
+
+        if (contact.comments==undefined || contact.comments=='') {
+            flash.warning('Diga alguma coisa','AVISO!');
+
+            return;
+        }
+
+        flash.warning('estamos enviando sua mensagem...','Aguarde...');
+
+        $rootScope.post(API.path+'contacts', contact, function(response){
+            $scope.contacts={};
+            jQuery("#modalContacts").modal('hide');
+            flash.success('Sua mensagem foi enviada com sucesso!','Obrigado!');
+        },function(response){
+            jQuery("#modalContacts").modal('hide');
+            flash.error('Houve uma falha no envio de sua mensgaem, por favor verifique os dados informados');
+
+            if (APP.debug){
+                console.log(response);
+            }
+        });
+    }
+
+    getAll();
 }

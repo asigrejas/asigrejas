@@ -48,8 +48,6 @@ angular.module('OrderService', []).service('OrderService', [
                 for (var key in order) {
                     delete order[key];
                 }
-
-                return true;
             }
         };
 
