@@ -240,19 +240,19 @@
                                 <a href ng-click="churchOrder('name')">Nome</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.address">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0]')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].street')=='desc' }"></i>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].street')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].street')=='desc' }"></i>
                                 <a href ng-click="churchOrder('addresses[0].street')">Endereço</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.city">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.city')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].city')=='desc' }"></i>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].city')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].city')=='desc' }"></i>
                                 <a href ng-click="churchOrder('addresses[0].city')">Cidade</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.state">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.state')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].state')=='desc' }"></i>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].state')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].state')=='desc' }"></i>
                                 <a href ng-click="churchOrder('addresses[0].state')">Estado</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.country">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses.country')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].country')=='desc' }"></i>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].country')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].country')=='desc' }"></i>
                                 <a href ng-click="churchOrder('addresses[0].country')">País</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.updated_at">
