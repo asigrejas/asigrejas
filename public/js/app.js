@@ -597,5 +597,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         });
     }
 
+    $scope.edit=function(church)
+    {
+        flash.warning('Funcionalidade de edição ainda não implementada.','NÃO DISPONÍVEL!');
+    }
+
     getAll();
 }
