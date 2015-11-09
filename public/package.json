@@ -1,5 +1,5 @@
 {
-  "name": "asIgrejas",
+  "name": "The Churches",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "angular": "^1.4.7",
     "bootstrap": "^3.3.5",

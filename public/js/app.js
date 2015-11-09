@@ -5,7 +5,7 @@
  * Inspirados nas aulas de VueJs do Vedovelli vedcasts.com.br 
  * Alguns métodos e layout foram importados das aulas
  */
-angular.module('appIgrejas', ['flashMessage', 'OrderService']).constant('APP', {
+angular.module('appChurches', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'As Igrejas Version Beta',
     debug: false,
     views: '/views/',
