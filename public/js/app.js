@@ -366,7 +366,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
 	var getAll=function()
 	{
-		$rootScope.get(API.path+'churches', function(response){
+		$rootScope.get(API.path+'addresses', function(response){
             if (APP.debug){
                 console.log(response.data);
             }

@@ -4,22 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>As Igrejas - Beta test</title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.css">
-    <link rel="stylesheet" type="text/css" href="/node_modules/sweetalert/dist/sweetalert.css">
-    <link rel="stylesheet" href="/css/modalFullscreen.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/app.css">
 
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/node_modules/angular/angular.min.js"></script>
-    <script src="/node_modules/moment/moment.js"></script>
-    <script src="/node_modules/select2/dist/js/select2.js"></script>
-    <script src="/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="/js/dist/lodash.js"></script>
-    <script src="/js/dist/flashMessage.js"></script>
-    <script src="/js/dist/orderService.js"></script>
-    <script src="/js/helpers.js"></script>
+    <script src="/assets/js/dist.js"></script>
 </head>
 <body>
 
@@ -253,24 +240,24 @@
                     <thead>
                         <tr>
                             <th>
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('name')=='asc', 'fa-sort-amount-desc': churchByOrder('name')=='desc' }"></i>
-                                <a href ng-click="churchOrder('name')">Nome</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('church.name')=='asc', 'fa-sort-amount-desc': churchByOrder('church.name')=='desc' }"></i>
+                                <a href ng-click="churchOrder('church.name')">Nome</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.address">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].street')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].street')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses[0].street')">Endereço</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('street')=='asc', 'fa-sort-amount-desc': churchByOrder('street')=='desc' }"></i>
+                                <a href ng-click="churchOrder('street')">Endereço</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.city">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].city')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].city')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses[0].city')">Cidade</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('city')=='asc', 'fa-sort-amount-desc': churchByOrder('city')=='desc' }"></i>
+                                <a href ng-click="churchOrder('city')">Cidade</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.state">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].state')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].state')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses[0].state')">Estado</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('state')=='asc', 'fa-sort-amount-desc': churchByOrder('state')=='desc' }"></i>
+                                <a href ng-click="churchOrder('state')">Estado</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.country">
-                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('addresses[0].country')=='asc', 'fa-sort-amount-desc': churchByOrder('addresses[0].country')=='desc' }"></i>
-                                <a href ng-click="churchOrder('addresses[0].country')">País</a>
+                                 <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('country')=='asc', 'fa-sort-amount-desc': churchByOrder('country')=='desc' }"></i>
+                                <a href ng-click="churchOrder('country')">País</a>
                             </th>
                             <th ng-show="interaction.visibleColumns.updated_at">
                                  <i class="fa fa-fw fa-sort" ng-class="{ 'fa-sort-amount-asc': churchByOrder('updated_at')=='asc', 'fa-sort-amount-desc': churchByOrder('updated_at')=='desc' }"></i>
@@ -290,55 +277,46 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-repeat="church in churches.list">
+                    <tbody ng-repeat="address in churches.list">
                         <tr>
-                            <td>{{ church.name }}</td>
+                            <td>{{ address.church.name }}</td>
                             <td ng-show="interaction.visibleColumns.address">
-                                <div ng-repeat="address in church.addresses">
-                                    {{ address.street }}, {{ address.number }}, {{ address.district }}
-                                </div>
+                                {{ address.street }}, {{ address.number }}, {{ address.district }}
                             </td>
                             <td ng-show="interaction.visibleColumns.city">
-                                <div ng-repeat="address in church.addresses">
-                                    {{ address.city }}
-                                </div>
+                                {{ address.city }}
                             </td>
                             <td ng-show="interaction.visibleColumns.state">
-                                <div ng-repeat="address in church.addresses">
-                                    {{ address.state }}
-                                </div>
+                                {{ address.state }}
                             </td>
                             <td ng-show="interaction.visibleColumns.country">
-                                <div ng-repeat="address in church.addresses">
-                                    {{ address.country }}
-                                </div>
+                                {{ address.country }}
                             </td>
                             <td ng-show="interaction.visibleColumns.updated_at">{{ church.updated_at | dateFormat:'DD/MM/YYYY HH:mm' }}</td>
 
-
                             <td>
                                 <a href
-                                    ng-show="church.comments"
-                                    ng-click="doOpenComments(church.id)">
+                                    ng-show="address.comments"
+                                    ng-click="doOpenComments(address.id)">
                                     <i class="fa"
 
-                                        ng-class=" { 'fa-plus-square':interaction.openComments.indexOf(church.id) == -1,
-                                            'fa-minus-square':interaction.openComments.indexOf(church.id) > -1 }"
+                                        ng-class=" { 'fa-plus-square':interaction.openComments.indexOf(address.id) == -1,
+                                            'fa-minus-square':interaction.openComments.indexOf(address.id) > -1 }"
 
                                      $scope.interaction.openComments.indexOf
                                        ></i>
                                 </a>
                                 <i class="fa fa-plus-square"
-                                    ng-show="!church.comments"
+                                    ng-show="!address.comments"
                                     style="opacity:0.3"></i>
                             </td>
 
                             <td width="1%" nowrap>
-                                <a href ng-click="edit(church)"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href ng-click="edit(address.church)"><i class="fa fa-fw fa-edit"></i></a>
                             </td>
                         </tr>
-                        <tr ng-show="interaction.openComments.indexOf(church.id) > -1 && church.comments != ''">
-                            <td colspan="6">{{ church.comments }}</td>
+                        <tr ng-show="interaction.openComments.indexOf(address.id) > -1 && address.comments != ''">
+                            <td colspan="6">{{ address.comments }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -368,7 +346,6 @@
 
             </div>
         </div>
-
 
         <div class="modal fade" id="modalContacts">
             <div class="modal-dialog">
@@ -438,11 +415,10 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-
     </div>
 
     <div>
-        <script src="/js/app.js"></script>
+        <script src="/assets/js/app.js"></script>
     </div>
 </body>
 </html>
