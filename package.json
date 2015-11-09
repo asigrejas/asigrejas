@@ -1,12 +1,12 @@
 {
-  "name": "The Churches",
+  "name": "TheChurches",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Leandro Henrique dos Reis http://henriquereis.com",
   "license": "MIT",
   "dependencies": {
     "angular": "^1.4.7",
@@ -16,5 +16,14 @@
     "moment": "^2.10.6",
     "select2": "^4.0.0",
     "sweetalert": "^1.1.3"
+  },
+  "devDependencies": {
+    "elixir": "^0.1.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.12.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.2",
+    "laravel-elixir": "^3.4.2"
   }
 }

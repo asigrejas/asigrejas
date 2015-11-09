@@ -14,7 +14,7 @@ require('laravel-elixir-livereload');
 
 var distJs="../../../public/js/dist/";
 var js="../../../public/js/";
-var node="../../../public/node_modules/";
+var node="../../../node_modules/";
 var assets="public/assets/";
 
 elixir(function(mix) {
