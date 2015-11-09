@@ -83,7 +83,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         };
 
 	$scope.interaction= {
-            visibleColumns: {'address':true, 'city':true, 'updated_at':true},
+            visibleColumns: {'address':true, 'city':true},
             columnsToFilter: [],
             filterTerm: '',
             openComments: []
@@ -327,7 +327,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
 	$scope.doResetAll= function()
         {
-            $scope.interaction.visibleColumns = {'address':true, 'city':true, 'updated_at':true};
+            $scope.interaction.visibleColumns = {'address':true, 'city':true};
             $scope.interaction.columnsToFilter = [];
             $scope.interaction.filterTerm = '';
             $scope.interaction.openComments = [];
