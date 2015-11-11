@@ -12,7 +12,7 @@ angular.module('appChurches', ['flashMessage', 'OrderService']).constant('APP', 
     path: '/'
 }).constant('API', {
 //    path: '//api.asigrejas.app/v1/'
-    path: '//api.asigrejas.com/v1/'
+    path: 'http://api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
