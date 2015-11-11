@@ -369,7 +369,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             {
                 $scope.interaction.openComments=[];
             } else {
-                $scope.interaction.openComments= _.pluck($scope.churches.list, 'id');
+                $scope.interaction.openComments= _.pluck($scope.churches.all, 'id');
             }
         };
 
