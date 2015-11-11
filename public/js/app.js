@@ -539,9 +539,18 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         }
     }
 
-    $scope.addAddess=function()
+    $scope.addAddess=function(selectTitle)
     {
+        selectTitle=selectTitle || false;
         $scope.church.addresses.push(angular.copy(new Address()));
+        if (selectTitle) {
+             setTimeout(function(){
+                $scope.showTab($scope.church.addresses.length);
+                var title='title'+$scope.church.addresses.length;
+                angular.element("#"+title).trigger('focus');
+             }, 100);
+             
+        }
     }
 
     $scope.showTab=function(id)

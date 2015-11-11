@@ -18,6 +18,7 @@ var node="../../../node_modules/";
 var assets="public/assets/";
 
 elixir(function(mix) {
+/*
    mix.styles([
        node+"bootstrap/dist/css/bootstrap.css",
        node+"font-awesome/css/font-awesome.css",
@@ -38,7 +39,7 @@ elixir(function(mix) {
        distJs+"orderService.js"
    ], assets+"js/dist.js");
 
-
+*/
    mix.scripts([
        js+"app.js",
        js+"helpers.js"
