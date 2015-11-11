@@ -6,13 +6,13 @@
  * Alguns métodos e layout foram importados das aulas
  */
 angular.module('appChurches', ['flashMessage', 'OrderService']).constant('APP', {
-    name: 'As Igrejas Version Beta',
-    debug: false,
+    name: 'The Churches Version Beta',
+    debug: true,
     views: '/views/',
     path: '/'
 }).constant('API', {
-//    path: '//api.asigrejas.app/v1/'
-    path: '//api.asigrejas.com/v1/'
+    path: '//api.asigrejas.app/v1/'
+//    path: '//api.asigrejas.com/v1/'
 }).filter('dateFormat', function() {
     return function(value, formatString) {
 		if(formatString != undefined)
@@ -99,6 +99,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 	$scope.controls= {
             select2: null,
         }
+
+    $scope.errors=[];
 
     var defaults={
         'country': 'Brazil'
@@ -226,7 +228,9 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     }
 
     $scope.churchSave=function(data){
-    	var church=angular.copy(data);
+        $scope.errors=[];
+
+       	var church=angular.copy(data);
     	var save=$http.post;
     	var path=API.path+'churches/';
 
@@ -263,15 +267,17 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
                 jQuery("#modalChurches").modal('hide');
                 $scope.addAddess();
     //            getAll();
-                flash.success('Igreja Salva com sucesso! - Aguardando Aprovação','SUCESSO!');
+                flash.success('Igreja Salva com sucesso!','Aguardando Aprovação!');
             }, function(response){
                 if (APP.debug) {
                     console.log(response.data);
                 }
                 var errors=[];
                     angular.forEach(response.data.message,function(error, key){
-                        errors.push(key);
+                        errors.push(error);
                     });
+                $scope.errors=errors;
+
                 flash.error('Houve uma falha ao tentar salvar a igreja, verifique se preencheu todos os dados do(s) endereço(s).','ERRO!');
             })
 
@@ -558,7 +564,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     $scope.showTab=function(id)
     {
-        $('.nav-tabs a[href="#tabEndereco_'+id+'"]').tab('show');
+        $('.nav-tabs a[href="#tabEndereco'+id+'"]').tab('show');
     }
 
 
