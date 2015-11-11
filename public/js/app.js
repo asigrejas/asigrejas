@@ -253,26 +253,29 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             console.log("######## DADOS PARA SEREM SALVOS");
             console.log(church);
         }
-    	save(path, church).then(function(response){
-            $scope.church = {
-                addresses: []
-            };
+        flash.confirm(function(){
+            save(path, church).then(function(response){
+                $scope.church = {
+                    addresses: []
+                };
 
-            $('.nav-tabs a[href="#tabIgreja"]').tab('show');
-            jQuery("#modalChurches").modal('hide');
-            $scope.addAddess();
-//            getAll();
-            flash.success('Igreja Salva com sucesso! - Aguardando Aprovação','SUCESSO!');
-    	}, function(response){
-            if (APP.debug) {
-                console.log(response.data);
-            }
-            var errors=[];
-                angular.forEach(response.data.message,function(error, key){
-                    errors.push(key);
-                });
-    		flash.error('Houve uma falha ao tentar salvar a igreja, verifique se preencheu todos os dados do(s) endereço(s).','ERRO!');
-    	})
+                $('.nav-tabs a[href="#tabIgreja"]').tab('show');
+                jQuery("#modalChurches").modal('hide');
+                $scope.addAddess();
+    //            getAll();
+                flash.success('Igreja Salva com sucesso! - Aguardando Aprovação','SUCESSO!');
+            }, function(response){
+                if (APP.debug) {
+                    console.log(response.data);
+                }
+                var errors=[];
+                    angular.forEach(response.data.message,function(error, key){
+                        errors.push(key);
+                    });
+                flash.error('Houve uma falha ao tentar salvar a igreja, verifique se preencheu todos os dados do(s) endereço(s).','ERRO!');
+            })
+
+        },'Continuar?','SALVAR DADOS','Sim','Não');
     }
 
     $scope.setPaginationData= function(list)
