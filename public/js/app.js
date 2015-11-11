@@ -7,7 +7,7 @@
  */
 angular.module('appChurches', ['flashMessage', 'OrderService']).constant('APP', {
     name: 'The Churches Version Beta',
-    debug: true,
+    debug: false,
     views: '/views/',
     path: '/'
 }).constant('API', {
