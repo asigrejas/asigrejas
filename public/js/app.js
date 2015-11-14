@@ -67,6 +67,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     $scope.contacts={};
     $scope.sendContacts=false;
+    $scope.search={};
 
 	$scope.churches= {
             all: [],
@@ -620,5 +621,14 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
         flash.warning('Funcionalidade de edição ainda não implementada.','NÃO DISPONÍVEL!');
     }
 
+
+    $scope.doFilter= function(search)
+        {
+            filtered = $filter('filter')($scope.churches.all,search);        
+
+            $scope.setPaginationData(filtered);
+        };
+
     getAll();
+
 }

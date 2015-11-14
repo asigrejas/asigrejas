@@ -229,26 +229,47 @@
                 <div class="well">
                     Já viajou para outra cidade e não soube como encontrar uma igreja? Já quiz visitar outras igrejas? Outros também podem ter a mesma experiência que você cadastre sua igreja aqui, ou encontre uma para visitar.
                 </div>
-                <div class="well" ng-hide="true">
+                <div class="well">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <input
-                                ng-model="interaction.filterTerm"
-                                ng-click="doFilter"
-                                type="text"
-                                placeholder="Digite o termo para filtrar a lista"
-                                class="form-control">
+                        <div class="col-md-4 col-sm-12">
+                            Filtor por igreja
                         </div>
-                        <div class="col-md-6 col-sm-12">
-                            <select
-                                ng-model="columnsToFilterSelect"
-                                multiple
-                                class="form-control"
-                                id="columnsToFilterSelect">
-                                <option value="name">Igreja</option>
-                                <option value="city">Cidade</option>
-                                <option value="state">Estado</option>
-                            </select>
+                        <div class="col-md-8 col-sm-12">
+                            <input
+                                ng-model="search.church.name"
+                                type="text"
+                                placeholder="Filtro por igreja"
+                                class="form-control" ng-change="doFilter(search)">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            Filtor por cidade
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <input
+                                ng-model="search.city"
+                                type="text"
+                                placeholder="Filtro por cidade"
+                                class="form-control" ng-change="doFilter(search)">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            Filtor por bairro
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <input
+                                ng-model="search.district"
+                                type="text"
+                                placeholder="Filtro por bairro"
+                                class="form-control" ng-change="doFilter(search)">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            Filtor por rua
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <input
+                                ng-model="search.street"
+                                type="text"
+                                placeholder="Filtro por rua"
+                                class="form-control" ng-change="doFilter(search)">
                         </div>
                     </div>
                 </div>
