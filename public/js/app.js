@@ -651,7 +651,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
                 url: '/church.png',
                 anchor: new google.maps.Point(15, 48)
             },
-            title: addresses[i].church.name,
+            title: (addresses[i].title?addresses[i].church.name+' - '+addresses[i].title:addresses[i].church.name),
             position: new google.maps.LatLng(addresses[i].latitude, addresses[i].longitude),
             map: map
           });
@@ -659,7 +659,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
           google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
 
-              infowindow.setContent(addresses[i].church.name+' - '+addresses[i].title);
+              infowindow.setContent((addresses[i].title?addresses[i].church.name+' - '+addresses[i].title:addresses[i].church.name));
               infowindow.open(map, marker);
             }
           })(marker, i));
