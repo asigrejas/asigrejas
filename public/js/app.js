@@ -627,7 +627,7 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
     $scope.doFilter= function(search)
         {
             filtered = $filter('filter')($scope.churches.all,search);        
-
+            googleMaps(filtered);
             $scope.setPaginationData(filtered);
         };
 
