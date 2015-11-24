@@ -382,6 +382,8 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
             }
             $scope.churches.all=response.data;
 
+            googleMaps($scope.churches.all);
+
             $scope.setPaginationData(response.data);
 		})
 
@@ -631,4 +633,32 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
     getAll();
 
+    var googleMaps=function(addresses)
+    {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: new google.maps.LatLng(addresses[0].latitude, addresses[0].longitude),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+
+        for (i = 0; i < addresses.length; i++) {
+          marker = new google.maps.Marker({
+            title: addresses[i].church.name,
+            position: new google.maps.LatLng(addresses[i].latitude, addresses[i].longitude),
+            map: map
+          });
+
+          google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+
+              infowindow.setContent(addresses[i].church.name+' - '+addresses[i].title);
+              infowindow.open(map, marker);
+            }
+          })(marker, i));
+        }
+    }
 }
