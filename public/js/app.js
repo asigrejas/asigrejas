@@ -647,6 +647,10 @@ function ChurchController($rootScope, $scope, $http, $filter, APP, API, flash, O
 
         for (i = 0; i < addresses.length; i++) {
           marker = new google.maps.Marker({
+            icon: {
+                url: '/church.png',
+                anchor: new google.maps.Point(15, 48)
+            },
             title: addresses[i].church.name,
             position: new google.maps.LatLng(addresses[i].latitude, addresses[i].longitude),
             map: map
